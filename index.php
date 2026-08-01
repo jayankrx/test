@@ -1,6 +1,6 @@
 <?php include "./dbinfo.inc"; ?>
 <html>
-i<body bgcolor="orange">
+i<body bgcolor="green">
 <h1 style="color:blue; font-size:160px">Sample page</h1>
 <?php
 
