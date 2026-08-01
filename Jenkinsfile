@@ -1,4 +1,5 @@
 pipeline {
+
     agent any
 
     environment {
@@ -7,7 +8,7 @@ pipeline {
         ECR_REPOSITORY = "myrepo"
 
         IMAGE_NAME = "myrepo"
-        IMAGE_TAG = "v1"
+        IMAGE_TAG = "v${BUILD_NUMBER}"
     }
 
     stages {
@@ -20,7 +21,9 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t ${IMAGE_NAME}:${IMAGE_TAG} .'
+                sh '''
+                docker build -t ${IMAGE_NAME}:${IMAGE_TAG} .
+                '''
             }
         }
 
@@ -52,11 +55,11 @@ pipeline {
             }
         }
 
-
         stage('Deploy to Kubernetes') {
             steps {
                 sh '''
-                helm upgrade --install phpapptest helm/phpapptest
+                helm upgrade --install phpapptest helm/phpapptest \
+                --set image.tag=${IMAGE_TAG}
                 '''
             }
         }
