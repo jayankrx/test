@@ -1,7 +1,6 @@
-
 <?php include "./dbinfo.inc"; ?>
 <html>
-<body bgcolor="pink">
+i<body bgcolor="orange">
 <h1 style="color:blue; font-size:160px">Sample page</h1>
 <?php
 
@@ -118,6 +117,6 @@ function TableExists($tableName, $connection, $dbName) {
 
   return false;
 }
-?>                        
-                
+?>
+
 
