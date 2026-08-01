@@ -1,8 +1,7 @@
-
 <?php include "./dbinfo.inc"; ?>
 <html>
-<body bgcolor="pink">
-<h1 style="color:blue; font-size:160px">Sample page</h1>
+<body>
+<h1>Sample page</h1>
 <?php
 
   /* Connect to MySQL and select the database. */
@@ -120,4 +119,3 @@ function TableExists($tableName, $connection, $dbName) {
 }
 ?>                        
                 
-
