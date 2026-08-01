@@ -2,6 +2,10 @@ pipeline {
     agent any
 
     environment {
+        AWS_REGION = "us-west-2"
+        AWS_ACCOUNT_ID = "880882846543"
+        ECR_REPOSITORY = "myrepo"
+
         IMAGE_NAME = "myrepo"
         IMAGE_TAG = "v1"
     }
@@ -20,5 +24,32 @@ pipeline {
             }
         }
 
+        stage('Login to Amazon ECR') {
+            steps {
+                sh '''
+                aws ecr get-login-password --region ${AWS_REGION} | \
+                docker login --username AWS --password-stdin \
+                ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
+                '''
+            }
+        }
+
+        stage('Tag Docker Image') {
+            steps {
+                sh '''
+                docker tag ${IMAGE_NAME}:${IMAGE_TAG} \
+                ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY}:${IMAGE_TAG}
+                '''
+            }
+        }
+
+        stage('Push Image to ECR') {
+            steps {
+                sh '''
+                docker push \
+                ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPOSITORY}:${IMAGE_TAG}
+                '''
+            }
+        }
     }
 }
